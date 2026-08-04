@@ -1,7 +1,88 @@
 import type { NextConfig } from "next";
 
+const routeAliases = [
+  ["/login", "/Login"],
+  ["/forgot-password", "/ForgotPassword"],
+  ["/reset-password", "/ResetPassword"],
+  ["/unauthorized", "/Unauthorized"],
+
+  ["/admin", "/Admin"],
+  ["/admin/students", "/Admin/Students"],
+  ["/admin/students/new", "/Admin/Students/New"],
+  ["/admin/students/:studentId/edit", "/Admin/Students/:studentId/Edit"],
+  ["/admin/students/:studentId", "/Admin/Students/:studentId"],
+  ["/admin/rfid-cards", "/Admin/RfidCards"],
+  ["/admin/rfid-cards/register", "/Admin/RfidCards/Register"],
+  ["/admin/rfid-cards/:cardId", "/Admin/RfidCards/:cardId"],
+  ["/admin/live-monitoring", "/Admin/LiveMonitoring"],
+  ["/admin/attendance", "/Admin/Attendance"],
+  ["/admin/attendance/:attendanceId", "/Admin/Attendance/:attendanceId"],
+  ["/admin/sms-notifications", "/Admin/SmsNotifications"],
+  ["/admin/sms-notifications/:smsLogId", "/Admin/SmsNotifications/:smsLogId"],
+  ["/admin/reports", "/Admin/Reports"],
+  ["/admin/users", "/Admin/Users"],
+  ["/admin/users/new", "/Admin/Users/New"],
+  ["/admin/users/:userId/edit", "/Admin/Users/:userId/Edit"],
+  ["/admin/users/:userId", "/Admin/Users/:userId"],
+  ["/admin/announcements", "/Admin/Announcements"],
+  ["/admin/announcements/new", "/Admin/Announcements/New"],
+  ["/admin/announcements/:announcementId/edit", "/Admin/Announcements/:announcementId/Edit"],
+  ["/admin/correction-requests", "/Admin/CorrectionRequests"],
+  ["/admin/correction-requests/:requestId", "/Admin/CorrectionRequests/:requestId"],
+  ["/admin/notifications", "/Admin/Notifications"],
+  ["/admin/audit-logs", "/Admin/AuditLogs"],
+  ["/admin/device-monitoring", "/Admin/DeviceMonitoring"],
+  ["/admin/device-monitoring/:deviceId", "/Admin/DeviceMonitoring/:deviceId"],
+  ["/admin/settings", "/Admin/Settings"],
+
+  ["/teacher", "/Teacher"],
+  ["/teacher/my-students", "/Teacher/MyStudents"],
+  ["/teacher/my-students/:studentId", "/Teacher/MyStudents/:studentId"],
+  ["/teacher/attendance", "/Teacher/Attendance"],
+  ["/teacher/attendance/:attendanceId", "/Teacher/Attendance/:attendanceId"],
+  ["/teacher/reports", "/Teacher/Reports"],
+  ["/teacher/announcements", "/Teacher/Announcements"],
+  ["/teacher/announcements/:announcementId", "/Teacher/Announcements/:announcementId"],
+  ["/teacher/correction-requests", "/Teacher/CorrectionRequests"],
+  ["/teacher/correction-requests/new", "/Teacher/CorrectionRequests/New"],
+  ["/teacher/correction-requests/:requestId", "/Teacher/CorrectionRequests/:requestId"],
+  ["/teacher/notifications", "/Teacher/Notifications"],
+  ["/teacher/profile", "/Teacher/Profile"],
+  ["/teacher/profile/security", "/Teacher/Profile/Security"],
+
+  ["/student", "/Student"],
+  ["/student/attendance", "/Student/Attendance"],
+  ["/student/attendance/:attendanceId", "/Student/Attendance/:attendanceId"],
+  ["/student/sms-status", "/Student/SmsStatus"],
+  ["/student/announcements", "/Student/Announcements"],
+  ["/student/announcements/:announcementId", "/Student/Announcements/:announcementId"],
+  ["/student/correction-requests", "/Student/CorrectionRequests"],
+  ["/student/correction-requests/new", "/Student/CorrectionRequests/New"],
+  ["/student/correction-requests/:requestId", "/Student/CorrectionRequests/:requestId"],
+  ["/student/notifications", "/Student/Notifications"],
+  ["/student/profile", "/Student/Profile"],
+  ["/student/profile/security", "/Student/Profile/Security"],
+
+  ["/api/rfid/:path*", "/Api/Rfid/:path*"],
+  ["/api/students/:path*", "/Api/Students/:path*"],
+  ["/api/attendance/:path*", "/Api/Attendance/:path*"],
+  ["/api/sms/:path*", "/Api/Sms/:path*"],
+  ["/api/reports/:path*", "/Api/Reports/:path*"],
+  ["/api/users/:path*", "/Api/Users/:path*"],
+  ["/api/announcements/:path*", "/Api/Announcements/:path*"],
+  ["/api/correction-requests/:path*", "/Api/CorrectionRequests/:path*"],
+  ["/api/notifications/:path*", "/Api/Notifications/:path*"],
+  ["/api/audit-logs/:path*", "/Api/AuditLogs/:path*"],
+  ["/api/devices/:path*", "/Api/Devices/:path*"],
+] as const;
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  rewrites() {
+    return routeAliases.map(([source, destination]) => ({
+      source,
+      destination,
+    }));
+  },
 };
 
 export default nextConfig;
