@@ -1,10 +1,9 @@
-import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
+import { ResetPasswordForm } from "./ResetPasswordForm";
 
 export default function ResetPasswordPage() {
   return (
-    <RoutePlaceholder
-      title="Reset password"
-      description="Choose a new password for your account."
-    />
+    <main className="flex min-h-screen items-center px-6 py-16">
+      <ResetPasswordForm />
+    </main>
   );
 }

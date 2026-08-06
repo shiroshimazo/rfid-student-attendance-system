@@ -63,6 +63,7 @@ const routeAliases = [
   ["/student/profile", "/Dashboards/Student/Profile"],
   ["/student/profile/security", "/Dashboards/Student/Profile/Security"],
 
+  ["/api/auth/activity", "/Api/auth/activity"],
   ["/api/rfid/:path*", "/Api/Rfid/:path*"],
   ["/api/students/:path*", "/Api/Students/:path*"],
   ["/api/attendance/:path*", "/Api/Attendance/:path*"],

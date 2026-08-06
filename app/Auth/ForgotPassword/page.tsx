@@ -1,10 +1,9 @@
-import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
+import { ForgotPasswordForm } from "./ForgotPasswordForm";
 
 export default function ForgotPasswordPage() {
   return (
-    <RoutePlaceholder
-      title="Forgot password"
-      description="Request a password reset link for your account."
-    />
+    <main className="flex min-h-screen items-center px-6 py-16">
+      <ForgotPasswordForm />
+    </main>
   );
 }
