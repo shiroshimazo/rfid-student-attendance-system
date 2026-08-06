@@ -4,12 +4,35 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Auth screens are fixed dark-on-dark, so they carry their own literal scale
+ * instead of the theme-flipping semantic tokens.
+ *
+ * Deliberately NOT `@theme inline`: inline substitutes the declared value into
+ * each utility and collapses these color-mix() expressions down to their inner
+ * var(), which silently drops the alpha. A plain @theme emits the custom
+ * property intact and utilities reference it by var().
+ */
+@theme {
+  --color-auth-fg: var(--color-5);
+  --color-auth-label: color-mix(in srgb, var(--color-5) 72%, transparent);
+  --color-auth-icon: color-mix(in srgb, var(--color-5) 42%, transparent);
+  --color-auth-placeholder: color-mix(in srgb, var(--color-5) 32%, transparent);
+  --color-auth-hairline: color-mix(in srgb, var(--color-5) 12%, transparent);
+  --color-auth-field: color-mix(in srgb, var(--color-1) 60%, #000);
+  --color-auth-submit-hover: color-mix(
+    in srgb,
+    var(--color-5) 86%,
+    var(--color-4)
+  );
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-heading: "Supreme", var(--font-sans);
   --color-brand-1: var(--color-1);
   --color-brand-2: var(--color-2);
   --color-brand-3: var(--color-3);
@@ -136,5 +159,56 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  /*
+   * Auth page chrome. The login is fixed dark-on-dark regardless of theme, so
+   * these are literal brand-token compositions rather than semantic vars.
+   *
+   * Only non-conflicting properties live here: shadcn's Input/Button emit
+   * utility-layer classes for color/border/background, and utilities beat
+   * components in cascade order. Anything that collides with a primitive's own
+   * utilities is exposed as a --auth-* var below and applied from the JSX via
+   * arbitrary-value utilities, so tailwind-merge can resolve the conflict.
+   */
+  .auth-gradient {
+    background-color: var(--color-1);
+    background-image:
+      radial-gradient(
+        60rem 45rem at 12% 8%,
+        color-mix(in srgb, var(--color-5) 7%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        50rem 40rem at 88% 92%,
+        color-mix(in srgb, var(--color-3) 8%, transparent),
+        transparent 55%
+      ),
+      linear-gradient(
+        160deg,
+        color-mix(in srgb, var(--color-5) 3%, transparent),
+        transparent 45%
+      );
+  }
+
+  /* Vertical hairline splitting the two panels, fading at both ends. */
+  .auth-divider {
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--color-5) 12%, transparent) 30%,
+      color-mix(in srgb, var(--color-5) 12%, transparent) 70%,
+      transparent
+    );
+  }
+
+  .auth-card {
+    border: 1px solid var(--color-auth-hairline);
+    background-color: color-mix(in srgb, var(--color-1) 92%, var(--color-2));
+    box-shadow:
+      0 1px 0 0 color-mix(in srgb, var(--color-5) 6%, transparent) inset,
+      0 24px 60px -20px rgb(0 0 0 / 0.6);
   }
 }

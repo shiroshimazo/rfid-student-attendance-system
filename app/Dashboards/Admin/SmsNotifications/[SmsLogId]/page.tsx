@@ -2,7 +2,7 @@ import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
 
 export default async function SmsLogDetailsPage({
   params,
-}: PageProps<"/Admin/SmsNotifications/[SmsLogId]">) {
+}: PageProps<"/Dashboards/Admin/SmsNotifications/[SmsLogId]">) {
   const { SmsLogId: smsLogId } = await params;
 
   return (

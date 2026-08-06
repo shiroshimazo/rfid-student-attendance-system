@@ -2,7 +2,7 @@ import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
 
 export default async function StudentAnnouncementDetailsPage({
   params,
-}: PageProps<"/Student/Announcements/[AnnouncementId]">) {
+}: PageProps<"/Dashboards/Student/Announcements/[AnnouncementId]">) {
   const { AnnouncementId: announcementId } = await params;
 
   return (

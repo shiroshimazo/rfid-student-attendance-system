@@ -2,7 +2,7 @@ import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
 
 export default async function AdminCorrectionRequestDetailsPage({
   params,
-}: PageProps<"/Admin/CorrectionRequests/[RequestId]">) {
+}: PageProps<"/Dashboards/Admin/CorrectionRequests/[RequestId]">) {
   const { RequestId: requestId } = await params;
 
   return (

@@ -2,7 +2,7 @@ import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
 
 export default async function AdminAttendanceDetailsPage({
   params,
-}: PageProps<"/Admin/Attendance/[AttendanceId]">) {
+}: PageProps<"/Dashboards/Admin/Attendance/[AttendanceId]">) {
   const { AttendanceId: attendanceId } = await params;
 
   return (

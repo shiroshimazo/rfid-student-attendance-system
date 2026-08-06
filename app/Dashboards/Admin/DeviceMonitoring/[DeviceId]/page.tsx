@@ -2,7 +2,7 @@ import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
 
 export default async function DeviceDetailsPage({
   params,
-}: PageProps<"/Admin/DeviceMonitoring/[DeviceId]">) {
+}: PageProps<"/Dashboards/Admin/DeviceMonitoring/[DeviceId]">) {
   const { DeviceId: deviceId } = await params;
 
   return (
