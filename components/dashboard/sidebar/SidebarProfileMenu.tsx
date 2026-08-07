@@ -2,8 +2,11 @@
 
 import { LogoutCurve } from "iconsax-reactjs";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
+import { signedOutStorageKey } from "@/lib/auth/browser-session";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
 import { getInitials } from "./navigation";
@@ -27,7 +30,37 @@ export function SidebarProfileMenu({
   onNavigate,
 }: SidebarProfileMenuProps) {
   const { config } = useDashboardSidebar();
+  const router = useRouter();
   const panelRef = useRef<HTMLDivElement>(null);
+  const [logoutPending, setLogoutPending] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
+
+  async function handleLogout() {
+    if (logoutPending) {
+      return;
+    }
+
+    setLogoutPending(true);
+    setLogoutError("");
+
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signOut({ scope: "local" });
+
+      if (error) {
+        throw error;
+      }
+
+      window.localStorage.setItem(signedOutStorageKey, String(Date.now()));
+      onNavigate();
+      onClose();
+      router.replace("/login");
+      router.refresh();
+    } catch {
+      setLogoutError("Unable to log out. Try again.");
+      setLogoutPending(false);
+    }
+  }
 
   // Roving focus across the menu. Focus lands on the first item so the menu is
   // usable from the keyboard the moment it opens.
@@ -165,20 +198,31 @@ export function SidebarProfileMenu({
       <button
         type="button"
         role="menuitem"
-        onClick={() => {
-          // TODO(supabase): connect the existing Supabase sign-out flow here
-          // (sign out + redirect). Intentionally frontend-only for now — this
-          // handler must not touch auth state.
-          onClose();
-        }}
+        onClick={() => void handleLogout()}
+        disabled={logoutPending}
+        aria-disabled={logoutPending}
+        aria-describedby={logoutError ? `${id}-logout-error` : undefined}
         className={cn(
           menuItemClass,
-          "text-rail-danger hover:bg-rail-danger-surface hover:text-rail-danger focus-visible:bg-rail-danger-surface focus-visible:text-rail-danger",
+          "text-rail-danger hover:bg-rail-danger-surface hover:text-rail-danger focus-visible:bg-rail-danger-surface focus-visible:text-rail-danger disabled:pointer-events-none disabled:opacity-60",
         )}
       >
         <LogoutCurve size={18} aria-hidden="true" className="shrink-0" />
-        <span className="truncate">Log Out</span>
+        <span className="truncate">
+          {logoutPending ? "Logging out…" : "Log Out"}
+        </span>
       </button>
+
+      {logoutError ? (
+        <p
+          id={`${id}-logout-error`}
+          role="alert"
+          aria-live="polite"
+          className="px-3 pt-1 pb-1.5 text-xs text-rail-danger"
+        >
+          {logoutError}
+        </p>
+      ) : null}
     </div>
   );
 }

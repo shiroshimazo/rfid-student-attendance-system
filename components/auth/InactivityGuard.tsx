@@ -3,12 +3,12 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 
+import { signedOutStorageKey } from "@/lib/auth/browser-session";
 import { createClient } from "@/lib/supabase/client";
 
 const idleTimeoutMs = 5 * 60 * 1000;
 const heartbeatThrottleMs = 60 * 1000;
 const lastActivityKey = "rfid-attendance:last-activity";
-const signedOutKey = "rfid-attendance:signed-out";
 
 export function InactivityGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -27,7 +27,7 @@ export function InactivityGuard({ children }: { children: React.ReactNode }) {
       signingOutRef.current = true;
       await supabase.auth.signOut({ scope: "local" });
       if (broadcast) {
-        window.localStorage.setItem(signedOutKey, String(Date.now()));
+        window.localStorage.setItem(signedOutStorageKey, String(Date.now()));
       }
       router.replace("/login?reason=idle");
       router.refresh();
@@ -83,7 +83,7 @@ export function InactivityGuard({ children }: { children: React.ReactNode }) {
     }
 
     function handleStorage(event: StorageEvent) {
-      if (event.key === signedOutKey && event.newValue) {
+      if (event.key === signedOutStorageKey && event.newValue) {
         void signOutForInactivity(false);
         return;
       }
