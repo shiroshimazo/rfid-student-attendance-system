@@ -84,6 +84,18 @@
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+  /*
+   * Attendance series scale. Named by meaning rather than by index so a chart,
+   * a legend swatch and a status badge that describe the same category cannot
+   * drift apart. Each value is a brand token; only `invalid` borrows the
+   * existing --destructive so a rejected scan reads as a fault in both themes.
+   * Ordered by ink weight (in > out > none) and that ranking is preserved when
+   * the theme flips, so the strongest series stays the strongest.
+   */
+  --color-series-in: var(--series-in);
+  --color-series-out: var(--series-out);
+  --color-series-none: var(--series-none);
+  --color-series-invalid: var(--series-invalid);
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -138,6 +150,15 @@
   --chart-3: var(--color-3);
   --chart-4: var(--color-4);
   --chart-5: var(--color-5);
+  /*
+   * Light theme: ink darkest for the primary series, lightening down the
+   * ranking. `none` is the lightest that still clears 3:1 against --card
+   * (#ffffff) as a non-text graphic.
+   */
+  --series-in: var(--color-1);
+  --series-out: var(--color-3);
+  --series-none: var(--color-4);
+  --series-invalid: var(--destructive);
   --radius: 0.625rem;
   /* Icon outline weight. Iconsax ships 1.5; this thins it globally. */
   --icon-stroke-width: 1;
@@ -175,6 +196,16 @@
   --chart-3: var(--color-3);
   --chart-4: var(--color-2);
   --chart-5: var(--color-1);
+  /*
+   * Dark theme inverts the ramp so the ranking survives the flip: the primary
+   * series stays the brightest against the dark card, and `none` recedes.
+   * --color-2 is deliberately the floor — anything darker disappears into the
+   * card surface.
+   */
+  --series-in: var(--color-5);
+  --series-out: var(--color-3);
+  --series-none: var(--color-2);
+  --series-invalid: var(--destructive);
   --sidebar: var(--color-1);
   --sidebar-foreground: var(--color-5);
   --sidebar-primary: var(--color-4);
@@ -204,8 +235,12 @@
    *
    * [stroke] restricts this to the outline variants (Linear/Broken/TwoTone);
    * the filled ones (Bold/Bulk/Outline) carry no stroke and are untouched.
+   *
+   * `.recharts-surface` is excluded because chart series are also stroked
+   * <path> elements: they declare their own weight per series and must not be
+   * flattened to the icon weight.
    */
-  svg path[stroke] {
+  svg:not(.recharts-surface) path[stroke] {
     stroke-width: var(--icon-stroke-width);
   }
 }
