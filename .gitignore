@@ -24,6 +24,8 @@
 .DS_Store
 *.pem
 /.agents/
+/.agents/skills/make-interfaces-feel-better
+/.claude/
 
 # debug
 npm-debug.log*

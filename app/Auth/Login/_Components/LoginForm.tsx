@@ -57,7 +57,10 @@ export function LoginForm() {
         ) : null}
 
         {state.message ? (
-          <p className="text-sm text-red-600" role="alert" aria-live="polite">
+          <p
+            className="animate-in fade-in slide-in-from-top-1 text-sm text-pretty text-auth-danger duration-200 ease-out motion-reduce:animate-none"
+            role="alert"
+          >
             {state.message}
           </p>
         ) : null}
@@ -65,7 +68,7 @@ export function LoginForm() {
         <Button
           type="submit"
           disabled={pending}
-          className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-[var(--color-1)] hover:bg-auth-submit-hover"
+          className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-[var(--color-1)] transition-[scale,background-color,translate] duration-150 ease-out hover:bg-auth-submit-hover active:not-disabled:scale-[0.96] motion-reduce:active:not-disabled:scale-100"
         >
           {pending ? "Signing in…" : "Sign in"}
         </Button>
@@ -73,7 +76,7 @@ export function LoginForm() {
 
       <Link
         href="/forgot-password"
-        className="mt-6 inline-block text-[13px] text-auth-icon transition-colors hover:text-auth-fg"
+        className="relative mt-6 inline-block text-[13px] text-auth-link transition-colors after:absolute after:inset-x-0 after:top-1/2 after:h-11 after:-translate-y-1/2 hover:text-auth-fg"
       >
         Forgot password?
       </Link>

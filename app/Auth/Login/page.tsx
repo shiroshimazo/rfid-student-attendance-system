@@ -14,10 +14,12 @@ export default function LoginPage() {
       <div className="flex items-center justify-center px-6 py-16">
         <div className="auth-card w-full max-w-[380px] rounded-2xl p-8">
           <div className="text-center">
-            <h1 className="font-heading text-2xl font-medium text-auth-fg">
+            <h1 className="font-heading text-2xl font-medium text-balance text-auth-fg">
               Welcome Back
             </h1>
-            <p className="mt-2 text-sm text-auth-label">Sign in your account</p>
+            <p className="mt-2 text-sm text-pretty text-auth-label">
+              Sign in your account
+            </p>
           </div>
 
           <LoginForm />
