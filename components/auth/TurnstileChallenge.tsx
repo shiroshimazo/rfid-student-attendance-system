@@ -26,7 +26,10 @@ export function TurnstileChallenge({ pending }: { pending: boolean }) {
   const widgetIdRef = useRef<string | null>(null);
   const wasPendingRef = useRef(false);
   const [token, setToken] = useState("");
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const siteKey =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+      : "1x00000000000000000000AA";
 
   const renderWidget = useCallback(() => {
     if (

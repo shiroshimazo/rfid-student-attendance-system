@@ -8,7 +8,10 @@ export async function verifyTurnstileToken(
   token: string,
   ipAddress: string,
 ) {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
+  const secret =
+    process.env.NODE_ENV === "production"
+      ? process.env.TURNSTILE_SECRET_KEY
+      : "1x0000000000000000000000000000000AA";
 
   if (!secret || !token) {
     return false;

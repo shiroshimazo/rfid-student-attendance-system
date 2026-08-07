@@ -403,8 +403,9 @@ Migration SQL is authoritative. `NULL` is written explicitly below; all omitted 
 ### `private.password_change_history`
 
 - `id uuid` PK; `userId uuid` FK `auth.users`; `changedAt DEFAULT now()`.
+- `reservationId uuid NULL` is the password-change idempotency key; null is allowed only for rows created before the corrective migration.
 - `changeMethod text`; `actorProfileId uuid NULL` FK; `authAuditLogId uuid NULL`; `metadata jsonb DEFAULT '{}'` object.
-- User/time index. Row is immutable.
+- User/time index and a partial unique reservation index. Row is immutable.
 
 ### `private.app_sessions`
 
@@ -605,10 +606,10 @@ All direct browser DML is revoked. Read grants plus RLS expose rows. Sensitive/a
 
 - Lockout: the ordinary-plan Next.js gateway calls service-only login-state RPCs. The fifth consecutive bad password locks the account for 60 minutes. All client responses remain generic.
 - Plan limit: `password_verification_attempt_hook` is retained but optional because Supabase lists it for Teams/Enterprise. Set `SUPABASE_PASSWORD_VERIFICATION_HOOK_ENABLED=true` only when configured, avoiding double counting.
-- Rate/CAPTCHA: account and IP buckets are HMAC-keyed and process-local. Defaults: one-hour window, account block at 5, IP block at 20, CAPTCHA at 3/10. Cloudflare Turnstile is verified server-side and also passed to Supabase Auth.
+- Rate/CAPTCHA: account and IP buckets are HMAC-keyed and process-local. Defaults: one-hour window, account block at 5, IP block at 20, CAPTCHA at 3/10. Cloudflare Turnstile is verified server-side and also passed to Supabase Auth. Local development uses Cloudflare's official test key pair; production requires real restricted credentials.
 - Password change: no cooldown or mandatory expiration. `begin_password_change` reserves for five minutes; the server updates Supabase Auth; `complete_password_change` clears forced-change state and writes history; Auth failure calls `cancel_password_change`.
 - Forced change: `force_password_change` requires a live `ADMIN` application session, reason, and optional compromise flag. It marks the account, clears reservations, revokes all app sessions, and audits the action.
-- Recovery: Forgot Password uses Supabase PKCE recovery with a generic response. Reset calls Supabase `updateUser`, records completion, signs out locally, and returns to login.
+- Recovery: Forgot Password requests a Supabase recovery email whose template renders `{{ .Token }}`, then verifies an exact six-digit `recovery` OTP server-side. Request/resend and verification attempts use HMAC-keyed account/IP limits, generic account responses, cooldowns, and Turnstile escalation. Password completion is idempotent by reservation ID, records history, clears stale failed-login/lockout state, revokes application sessions, signs out globally, and requires a new login.
 - Idle timeout: real browser activity resets the 300-second timer and sends a throttled heartbeat. RLS, the heartbeat route, and Proxy reject expiry; frontend signs out and redirects to login.
 - Supabase inactivity timeout alone is not exact: platform checks it on refresh and notes effective duration can include JWT expiry. Browser auto-refresh also measures token activity, not necessarily human activity.
 

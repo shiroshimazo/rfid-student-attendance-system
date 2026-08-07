@@ -406,6 +406,15 @@ begin
     '94000000-0000-4000-8000-000000000001',
     '{"test":true}'::jsonb
   );
+
+  -- A network retry with the same reservation is successful and idempotent.
+  perform public.complete_password_change(
+    '94000000-0000-4000-8000-000000000001',
+    v_reservation_id,
+    'SELF_SERVICE',
+    '94000000-0000-4000-8000-000000000001',
+    '{"test":true}'::jsonb
+  );
 end;
 $$;
 
@@ -430,6 +439,16 @@ select pg_temp.assert_true(
   'password-change audit history must preserve immediate repeated changes'
 );
 
+select pg_temp.assert_true(
+  (
+    select count(*) = 2
+    from private.password_change_history
+    where "userId" = '94000000-0000-4000-8000-000000000001'
+      and "reservationId" is not null
+  ),
+  'each new password-change audit row must preserve its reservation id'
+);
+
 select set_config(
   'request.jwt.claims',
   '{"sub":"94000000-0000-4000-8000-000000000001","session_id":"95000000-0000-4000-8000-000000000004"}',
@@ -440,6 +459,100 @@ select public.touch_my_session('127.0.0.1'::inet, 'database-test');
 select pg_temp.assert_true(
   (select "isActive" from public.my_session_status()),
   'application session may be created after required password change completes'
+);
+reset role;
+
+update private.auth_security_states
+set "consecutiveFailedAttempts" = 4,
+    "lastFailedAt" = clock_timestamp(),
+    "lockedUntil" = clock_timestamp() + interval '1 hour'
+where "userId" = '94000000-0000-4000-8000-000000000001';
+
+do $$
+declare
+  v_reservation_id uuid;
+begin
+  v_reservation_id := public.begin_password_change(
+    '94000000-0000-4000-8000-000000000001'
+  );
+  perform public.complete_password_change(
+    '94000000-0000-4000-8000-000000000001',
+    v_reservation_id,
+    'PASSWORD_RECOVERY',
+    '94000000-0000-4000-8000-000000000001',
+    '{"test":"recovery"}'::jsonb
+  );
+  perform public.complete_password_change(
+    '94000000-0000-4000-8000-000000000001',
+    v_reservation_id,
+    'PASSWORD_RECOVERY',
+    '94000000-0000-4000-8000-000000000001',
+    '{"test":"recovery"}'::jsonb
+  );
+end;
+$$;
+
+select pg_temp.assert_true(
+  not exists (
+    select 1
+    from private.app_sessions
+    where "userId" = '94000000-0000-4000-8000-000000000001'
+      and "revokedAt" is null
+  ),
+  'password recovery must revoke every active application session'
+);
+
+select pg_temp.assert_true(
+  (
+    select "consecutiveFailedAttempts" = 0
+      and "lastFailedAt" is null
+      and "lockedUntil" is null
+    from private.auth_security_states
+    where "userId" = '94000000-0000-4000-8000-000000000001'
+  ),
+  'password recovery must clear stale login failures and account lockout'
+);
+
+select pg_temp.assert_true(
+  (
+    select count(*) = 3
+    from private.password_change_history
+    where "userId" = '94000000-0000-4000-8000-000000000001'
+  ),
+  'idempotent recovery completion must create one audit row'
+);
+
+select pg_temp.expect_sqlstate(
+  $sql$
+    select public.complete_password_change(
+      '94000000-0000-4000-8000-000000000001',
+      (
+        select "reservationId"
+        from private.password_change_history
+        where "userId" = '94000000-0000-4000-8000-000000000001'
+          and "changeMethod" = 'PASSWORD_RECOVERY'
+        order by "changedAt" desc
+        limit 1
+      ),
+      'PASSWORD_RECOVERY',
+      '94000000-0000-4000-8000-000000000001',
+      '{"test":"different-retry"}'::jsonb
+    )
+  $sql$,
+  '55000',
+  'a reused password reservation cannot change its audit values'
+);
+
+select set_config(
+  'request.jwt.claims',
+  '{"sub":"94000000-0000-4000-8000-000000000001","session_id":"95000000-0000-4000-8000-000000000005"}',
+  true
+);
+set local role authenticated;
+select public.touch_my_session('127.0.0.1'::inet, 'database-test');
+select pg_temp.assert_true(
+  (select "isActive" from public.my_session_status()),
+  'a fresh application session may be created after recovery completes'
 );
 reset role;
 
