@@ -12,15 +12,11 @@ export default function AdminDashboardPage() {
   return (
     <DashboardSearchProvider>
       <div className="flex flex-col gap-4">
-        {/*
-          The shell header already renders the page `h1`, so this page's own
-          heading is an `h2` — same text, one level down, no duplicate h1.
-        */}
         <header className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0">
-            <h2 className="font-heading text-xl font-medium tracking-tight text-balance text-card-foreground">
+            <h1 className="font-heading text-xl font-medium tracking-tight text-balance text-card-foreground">
               Dashboard
-            </h2>
+            </h1>
             <p className="mt-1 text-sm text-pretty text-muted-foreground">
               Overview of today&apos;s attendance activity
             </p>

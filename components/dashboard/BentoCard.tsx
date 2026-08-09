@@ -37,7 +37,7 @@ export function BentoCard({
   return (
     <section
       className={cn(
-        "flex min-w-0 flex-col rounded-2xl border border-border bg-card p-5",
+        "flex min-w-0 flex-col rounded-2xl bg-card p-5",
         "shadow-[0_1px_2px_-1px_rgb(0_0_0/0.06),0_2px_4px_0_rgb(0_0_0/0.04)]",
         className,
       )}

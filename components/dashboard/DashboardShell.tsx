@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 import { DashboardSidebar } from "./sidebar/DashboardSidebar";
-import { getPageTitle, type DashboardNavConfig } from "./sidebar/navigation";
+import { type DashboardNavConfig } from "./sidebar/navigation";
 import {
   setSidebarCollapsed,
   useSidebarCollapsed,
@@ -70,7 +70,6 @@ export function DashboardShell({ config, children }: DashboardShellProps) {
     };
   }, [drawerOpen]);
 
-  const pageTitle = getPageTitle(config, pathname);
   const sidebarLabel = `${config.fallbackTitle} sidebar`;
 
   return (
@@ -130,21 +129,22 @@ export function DashboardShell({ config, children }: DashboardShellProps) {
         }
         className="flex min-h-screen min-w-0 flex-col transition-[margin] duration-200 ease-out md:ml-[var(--dashboard-rail-width)]"
       >
-        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 border-b border-border bg-background/85 px-4 backdrop-blur sm:px-6">
+        {/*
+          The drawer trigger lives here, not in a bar of its own: the shell has
+          no header row, so on mobile the button is the only chrome above the
+          page content. It disappears at `md`, where the rail is always visible.
+        */}
+        <div className="px-4 pt-4 sm:px-6 md:hidden">
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
             aria-label="Open navigation"
             aria-expanded={drawerOpen}
-            className="flex size-10 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring md:hidden"
+            className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
           >
             <HamburgerMenu size={20} aria-hidden="true" />
           </button>
-
-          <h1 className="min-w-0 truncate font-heading text-lg font-medium tracking-tight">
-            {pageTitle}
-          </h1>
-        </header>
+        </div>
 
         <main className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8">
           {children}

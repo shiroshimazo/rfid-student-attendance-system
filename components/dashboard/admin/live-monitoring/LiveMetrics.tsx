@@ -1,44 +1,45 @@
 import {
-  Card,
+  CloseCircle,
   type Icon,
   LoginCurve,
   LogoutCurve,
   MessageRemove,
-  MessageTick,
   People,
+  TickCircle,
 } from "iconsax-reactjs";
 
 import {
-  summaryMetrics,
-  type SummaryMetricId,
-} from "@/lib/mock-data/admin-dashboard";
+  liveMetrics,
+  type LiveMetricId,
+} from "@/lib/mock-data/live-monitoring";
 
 /**
- * Icon per metric. Kept beside the presentation rather than in the mock data so
- * the dataset stays serializable and free of component references.
+ * Icon per metric, kept beside the presentation so the dataset stays free of
+ * component references. `Inside Now` uses People rather than a direction icon:
+ * it is a headcount, not an event count.
  */
-const metricIcons: Record<SummaryMetricId, Icon> = {
-  "total-students": People,
+const metricIcons: Record<LiveMetricId, Icon> = {
   "in-today": LoginCurve,
   "out-today": LogoutCurve,
-  "sms-sent": MessageTick,
-  "sms-failed": MessageRemove,
-  "active-cards": Card,
+  "inside-now": People,
+  "successful-scans": TickCircle,
+  "rejected-scans": CloseCircle,
+  "failed-sms": MessageRemove,
 };
 
-export function SummaryMetrics() {
+export function LiveMetrics() {
   return (
-    <section aria-labelledby="summary-metrics-heading">
-      <h2 id="summary-metrics-heading" className="sr-only">
-        Today&apos;s summary
+    <section aria-labelledby="live-metrics-heading">
+      <h2 id="live-metrics-heading" className="sr-only">
+        Today&apos;s scan totals
       </h2>
 
       {/*
-        Two columns on the smallest screens, then four, then all six on a wide
+        Two columns on the smallest screens, then three, then all six on a wide
         desktop — the cards wrap instead of shrinking below a readable width.
       */}
       <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
-        {summaryMetrics.map((metric) => {
+        {liveMetrics.map((metric) => {
           const MetricIcon = metricIcons[metric.id];
 
           return (

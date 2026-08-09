@@ -1,10 +1,5 @@
-import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
+import { LiveMonitoringBoard } from "@/components/dashboard/admin/live-monitoring/LiveMonitoringBoard";
 
 export default function LiveMonitoringPage() {
-  return (
-    <RoutePlaceholder
-      title="Live monitoring"
-      description="Monitor RFID scans and attendance events in real time."
-    />
-  );
+  return <LiveMonitoringBoard />;
 }

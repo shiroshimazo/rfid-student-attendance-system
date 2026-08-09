@@ -65,7 +65,13 @@ export function AttendanceStatusCard() {
           <div className="relative mx-auto h-40 w-full max-w-56">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Tooltip content={StatusTooltip} />
+                {/*
+                  The center total is a later absolute sibling of the chart, so
+                  it would paint over this tooltip. Recharts positions the
+                  tooltip in its own wrapper, so the stacking order is set
+                  there rather than on the tooltip surface itself.
+                */}
+                <Tooltip content={StatusTooltip} wrapperStyle={{ zIndex: 10 }} />
                 <Pie
                   data={attendanceStatus}
                   dataKey="value"
