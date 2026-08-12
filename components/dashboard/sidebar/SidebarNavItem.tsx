@@ -31,7 +31,7 @@ export function SidebarNavItem({
       onClick={isMobile ? closeMobile : undefined}
       className={cn(
         "group/item relative flex min-h-10 items-center rounded-lg text-sm transition-colors outline-none",
-        "focus-visible:ring-2 focus-visible:ring-brand-3",
+        "focus-visible:ring-2 focus-visible:ring-ring",
         iconOnly ? "justify-center px-0" : "gap-3 px-3",
         active
           ? "bg-rail-active font-medium text-rail-fg"
@@ -42,7 +42,7 @@ export function SidebarNavItem({
       <span
         aria-hidden="true"
         className={cn(
-          "absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full bg-brand-5 transition-opacity",
+          "absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full bg-brand-text transition-opacity",
           active ? "opacity-100" : "opacity-0",
         )}
       />

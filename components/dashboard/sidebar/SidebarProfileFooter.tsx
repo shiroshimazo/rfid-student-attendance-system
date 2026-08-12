@@ -92,7 +92,7 @@ export function SidebarProfileFooter() {
         }
         className={cn(
           "group/profile relative flex min-h-12 w-full items-center rounded-xl transition-colors outline-none",
-          "hover:bg-rail-hover focus-visible:ring-2 focus-visible:ring-brand-3",
+          "hover:bg-rail-hover focus-visible:ring-2 focus-visible:ring-ring",
           open && "bg-rail-hover",
           iconOnly ? "justify-center px-0" : "gap-3 px-2",
         )}

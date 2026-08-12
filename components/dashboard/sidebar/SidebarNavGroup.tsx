@@ -36,7 +36,7 @@ export function SidebarNavGroup({
         aria-controls={panelId}
         className={cn(
           "flex min-h-10 w-full items-center gap-3 rounded-lg px-3 text-sm transition-colors outline-none",
-          "focus-visible:ring-2 focus-visible:ring-brand-3",
+          "focus-visible:ring-2 focus-visible:ring-ring",
           active
             ? "text-rail-fg"
             : "text-rail-muted hover:bg-rail-hover hover:text-rail-fg",

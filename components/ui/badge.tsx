@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
  * Compact status pill.
  *
  * Every variant keeps its text on a foreground token rather than on the tint it
- * sits in, so the label stays legible in both themes; the tint differentiates
+ * sits in, so the label stays legible whatever the tint; the tint differentiates
  * the category and the label itself carries the meaning.
  */
 const badgeVariants = cva(
@@ -14,10 +14,10 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        neutral: "bg-muted text-foreground dark:bg-muted/50",
-        ink: "bg-series-in/12 text-foreground dark:bg-series-in/16",
-        accent: "bg-series-out/20 text-foreground dark:bg-series-out/24",
-        destructive: "bg-destructive/12 text-destructive dark:bg-destructive/20",
+        neutral: "bg-muted text-foreground",
+        ink: "bg-series-in/16 text-foreground",
+        accent: "bg-series-out/24 text-foreground",
+        destructive: "bg-destructive/20 text-destructive-foreground",
         outline: "border-border text-muted-foreground",
       },
     },

@@ -16,9 +16,9 @@ export function ResetPasswordForm() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-md rounded-2xl border bg-white p-8 shadow-sm dark:bg-zinc-950">
+    <div className="mx-auto w-full max-w-md rounded-2xl border border-border bg-card p-8 text-card-foreground shadow-sm">
       <h1 className="text-2xl font-semibold">Choose a new password</h1>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="mt-2 text-sm text-muted-foreground">
         Your Supabase project password policy is enforced when this form is
         submitted.
       </p>
@@ -47,7 +47,7 @@ export function ResetPasswordForm() {
         </div>
 
         {state.message ? (
-          <p className="text-sm text-red-600" role="alert" aria-live="polite">
+          <p className="text-sm text-destructive" role="alert" aria-live="polite">
             {state.message}
           </p>
         ) : null}

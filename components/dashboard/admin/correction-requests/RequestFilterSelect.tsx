@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 import type { FilterOption } from "./filters";
 
-type RecordFilterSelectProps<Value extends string> = {
+type RequestFilterSelectProps<Value extends string> = {
   /** Announced name of the control; the trigger itself shows only the value. */
   label: string;
   options: FilterOption<Value>[];
@@ -16,23 +16,23 @@ type RecordFilterSelectProps<Value extends string> = {
 };
 
 /**
- * One dropdown of the records filter row, shared by Section, Status, Activity
- * and Sort so the four read and behave identically.
+ * One dropdown of the requests filter row, shared by Section, Status and Sort so
+ * the three read and behave identically.
  *
  * Built on the same `@base-ui/react` primitives as the rest of the UI layer, so
  * the listbox gets real `role="option"` semantics, type-ahead and arrow-key
  * navigation instead of a div that only responds to a mouse.
  */
-export function RecordFilterSelect<Value extends string>({
+export function RequestFilterSelect<Value extends string>({
   label,
   options,
   value,
   onValueChange,
-}: RecordFilterSelectProps<Value>) {
+}: RequestFilterSelectProps<Value>) {
   return (
     <Select.Root
       // `Select.Value` renders the raw value unless the root is told the item
-      // shape, so the trigger would read "correction-requested" without this.
+      // shape, so the trigger would read "all" instead of "All Status".
       items={options}
       value={value}
       onValueChange={(next) => onValueChange(next as Value)}

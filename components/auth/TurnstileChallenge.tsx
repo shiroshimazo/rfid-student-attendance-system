@@ -68,7 +68,7 @@ export function TurnstileChallenge({ pending }: { pending: boolean }) {
 
   if (!siteKey) {
     return (
-      <p className="text-sm text-red-600" role="alert">
+      <p className="text-sm text-auth-danger" role="alert">
         Security challenge is not configured. Contact the administrator.
       </p>
     );

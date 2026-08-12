@@ -21,7 +21,7 @@ type SidebarProfileMenuProps = {
 };
 
 const menuItemClass =
-  "flex min-h-10 w-full items-center gap-3 rounded-lg px-3 text-sm text-rail-muted transition-colors outline-none hover:bg-rail-hover hover:text-rail-fg focus-visible:bg-rail-hover focus-visible:text-rail-fg focus-visible:ring-2 focus-visible:ring-brand-3";
+  "flex min-h-10 w-full items-center gap-3 rounded-lg px-3 text-sm text-rail-muted transition-colors outline-none hover:bg-rail-hover hover:text-rail-fg focus-visible:bg-rail-hover focus-visible:text-rail-fg focus-visible:ring-2 focus-visible:ring-ring";
 
 export function SidebarProfileMenu({
   id,

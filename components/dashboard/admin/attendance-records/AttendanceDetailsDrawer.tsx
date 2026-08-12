@@ -61,7 +61,7 @@ export function AttendanceDetailsDrawer({
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange} swipeDirection="right">
       <Drawer.Portal>
-        <Drawer.Backdrop className="fixed inset-0 min-h-dvh bg-black/40 transition-opacity duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-ending-style:opacity-0 data-starting-style:opacity-0 data-swiping:duration-0" />
+        <Drawer.Backdrop className="fixed inset-0 min-h-dvh bg-brand-base/70 transition-opacity duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-ending-style:opacity-0 data-starting-style:opacity-0 data-swiping:duration-0" />
 
         {/*
           `justify-end` is what puts the panel on the right; on a phone the popup

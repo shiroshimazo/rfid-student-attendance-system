@@ -43,7 +43,7 @@ export function PasswordField() {
           autoComplete="current-password"
           required
           placeholder="••••••••"
-          className="h-11 rounded-lg border-auth-hairline bg-auth-field pr-11 pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder dark:bg-auth-field"
+          className="h-11 rounded-lg border-auth-hairline bg-auth-field pr-11 pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder"
         />
 
         <button

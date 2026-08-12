@@ -45,7 +45,7 @@ export function DashboardSidebar({
 
   return (
     <DashboardSidebarProvider value={contextValue}>
-      <div className="flex h-full flex-col bg-brand-1 text-rail-fg">
+      <div className="flex h-full flex-col bg-brand-base text-rail-fg">
         <SidebarHeader />
         <SidebarNavigation />
         <SidebarProfileFooter />

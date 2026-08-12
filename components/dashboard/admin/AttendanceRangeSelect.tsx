@@ -43,9 +43,8 @@ export function AttendanceRangeSelect({
       <Select.Trigger
         aria-label="Attendance time range"
         className={cn(
-          "inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-background px-2.5 text-xs font-medium text-foreground",
-          "transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
-          "dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+          "inline-flex h-8 items-center gap-1.5 rounded-lg border border-input bg-input/30 px-2.5 text-xs font-medium text-foreground",
+          "transition-colors outline-none hover:bg-input/50 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
         )}
       >
         <Select.Value />

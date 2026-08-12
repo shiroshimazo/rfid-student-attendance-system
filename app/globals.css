@@ -1,11 +1,22 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * This product is dark-only: there is no light theme and no theme toggle, so
+ * every token resolves to exactly one value.
+ *
+ * The `dark` variant is redefined as the identity selector rather than left to
+ * Tailwind's default `prefers-color-scheme` media query. A stray `dark:`
+ * utility therefore renders the same regardless of the visitor's OS setting,
+ * instead of only applying on a dark desktop. Nothing in the codebase uses it —
+ * the tokens are already dark — but the redefinition keeps a future one honest.
+ */
+@custom-variant dark (&);
 
 /*
- * Auth screens are fixed dark-on-dark, so they carry their own literal scale
- * instead of the theme-flipping semantic tokens.
+ * Auth screens and the admin rail carry their own literal scales rather than
+ * the semantic tokens: both are compositions of the brand ink over the brand
+ * base, at opacities the semantic layer has no name for.
  *
  * Deliberately NOT `@theme inline`: inline substitutes the declared value into
  * each utility and collapses these color-mix() expressions down to their inner
@@ -13,49 +24,61 @@
  * property intact and utilities reference it by var().
  */
 @theme {
-  --color-auth-fg: var(--color-5);
-  --color-auth-label: color-mix(in srgb, var(--color-5) 72%, transparent);
-  --color-auth-icon: color-mix(in srgb, var(--color-5) 42%, transparent);
+  --color-auth-fg: var(--brand-text);
+  --color-auth-label: color-mix(in srgb, var(--brand-text) 72%, transparent);
+  --color-auth-icon: color-mix(in srgb, var(--brand-text) 42%, transparent);
   /*
    * Placeholder and secondary-link tints are text, so both clear 4.5:1 rather
    * than the 3:1 that applies to the icon tint. Measured against the field
-   * (#0f1014) and the card (#1d1f26) respectively: 32% placeholder read 3.13:1
-   * and the link at the icon tint read 3.69:1.
+   * (#060606) and the card (#0c0c0c) respectively.
    */
-  --color-auth-placeholder: color-mix(in srgb, var(--color-5) 48%, transparent);
-  --color-auth-link: color-mix(in srgb, var(--color-5) 56%, transparent);
-  --color-auth-hairline: color-mix(in srgb, var(--color-5) 12%, transparent);
-  --color-auth-field: color-mix(in srgb, var(--color-1) 60%, #000);
+  --color-auth-placeholder: color-mix(
+    in srgb,
+    var(--brand-text) 48%,
+    transparent
+  );
+  --color-auth-link: color-mix(in srgb, var(--brand-text) 56%, transparent);
+  --color-auth-hairline: color-mix(in srgb, var(--brand-text) 12%, transparent);
+  --color-auth-field: color-mix(in srgb, var(--brand-base) 60%, #000);
   --color-auth-submit-hover: color-mix(
     in srgb,
-    var(--color-5) 86%,
-    var(--color-4)
+    var(--brand-text) 86%,
+    var(--brand-muted)
   );
   /*
-   * Error ink for the auth surface. Raw --destructive lands around 3.5:1 on the
-   * card, so it is lifted toward --color-5 until it clears 4.5:1 for body text.
+   * Status ink for the auth surface. The raw palette values already clear
+   * 4.5:1 on the auth card (#ef4444 at 5.1:1, #22c55e at 8.5:1), so unlike the
+   * previous scale they need no lift toward the foreground.
    */
-  --color-auth-danger: color-mix(in srgb, var(--destructive) 60%, var(--color-5));
+  --color-auth-danger: var(--brand-danger);
+  --color-auth-success: var(--brand-success);
 
   /*
-   * Admin navigation rail. Same rationale as the auth scale: the rail is fixed
-   * dark-on-dark in both themes, so it composes the literal brand tokens rather
-   * than the theme-flipping semantic ones. Every value is an opacity variation
-   * of the five brand colors, except the destructive pair which reuses the
-   * project's existing --destructive token.
+   * Admin navigation rail. Every value is an opacity variation of the brand
+   * ink over the brand base, except the destructive pair which reuses the
+   * palette's danger.
    */
-  --color-rail-fg: var(--color-5);
-  --color-rail-muted: color-mix(in srgb, var(--color-5) 62%, transparent);
-  --color-rail-label: color-mix(in srgb, var(--color-5) 42%, transparent);
-  --color-rail-icon: color-mix(in srgb, var(--color-5) 52%, transparent);
-  --color-rail-hairline: color-mix(in srgb, var(--color-5) 10%, transparent);
-  --color-rail-hover: color-mix(in srgb, var(--color-5) 7%, transparent);
-  --color-rail-active: color-mix(in srgb, var(--color-5) 13%, transparent);
-  --color-rail-surface: color-mix(in srgb, var(--color-1) 88%, var(--color-2));
-  --color-rail-danger: color-mix(in srgb, var(--destructive) 74%, var(--color-5));
+  --color-rail-fg: var(--brand-text);
+  --color-rail-muted: color-mix(in srgb, var(--brand-text) 62%, transparent);
+  /*
+   * 48% rather than the icon tint's 42%: a group label is text, and 42% white
+   * over the rail base composites to 3.9:1 — short of 4.5:1. At 48% it reads
+   * 4.8:1 while staying visibly quieter than --color-rail-muted.
+   */
+  --color-rail-label: color-mix(in srgb, var(--brand-text) 48%, transparent);
+  --color-rail-icon: color-mix(in srgb, var(--brand-text) 52%, transparent);
+  --color-rail-hairline: color-mix(in srgb, var(--brand-text) 10%, transparent);
+  --color-rail-hover: color-mix(in srgb, var(--brand-text) 7%, transparent);
+  --color-rail-active: color-mix(in srgb, var(--brand-text) 13%, transparent);
+  --color-rail-surface: color-mix(
+    in srgb,
+    var(--brand-base) 88%,
+    var(--brand-surface)
+  );
+  --color-rail-danger: var(--brand-danger);
   --color-rail-danger-surface: color-mix(
     in srgb,
-    var(--destructive) 18%,
+    var(--brand-danger) 18%,
     transparent
   );
 }
@@ -66,11 +89,14 @@
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
   --font-heading: "Supreme", var(--font-sans);
-  --color-brand-1: var(--color-1);
-  --color-brand-2: var(--color-2);
-  --color-brand-3: var(--color-3);
-  --color-brand-4: var(--color-4);
-  --color-brand-5: var(--color-5);
+  /*
+   * The three palette values that get used raw, where the semantic layer would
+   * be the wrong abstraction: the rail and the modal scrim are fixed surfaces,
+   * not theme-following ones.
+   */
+  --color-brand-base: var(--brand-base);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-text: var(--brand-text);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -87,10 +113,8 @@
   /*
    * Attendance series scale. Named by meaning rather than by index so a chart,
    * a legend swatch and a status badge that describe the same category cannot
-   * drift apart. Each value is a brand token; only `invalid` borrows the
-   * existing --destructive so a rejected scan reads as a fault in both themes.
-   * Ordered by ink weight (in > out > none) and that ranking is preserved when
-   * the theme flips, so the strongest series stays the strongest.
+   * drift apart. Ordered by ink weight (in > out > none); only `invalid`
+   * borrows the palette's danger so a rejected scan reads as a fault.
    */
   --color-series-in: var(--series-in);
   --color-series-out: var(--series-out);
@@ -100,6 +124,15 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  /*
+   * The three non-destructive status inks. `destructive` keeps its shadcn name
+   * so the primitives' own variants keep resolving; these three are new.
+   */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-disabled: var(--disabled);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -122,98 +155,114 @@
 }
 
 :root {
-  --color-1: #191b21;
-  --color-2: #484b5b;
-  --color-3: #7f88a9;
-  --color-4: #b9bdcc;
-  --color-5: #f0f1f5;
-  --background: var(--color-5);
-  --foreground: var(--color-1);
-  --card: #ffffff;
-  --card-foreground: var(--color-1);
-  --popover: #ffffff;
-  --popover-foreground: var(--color-1);
-  --primary: var(--color-1);
-  --primary-foreground: var(--color-5);
-  --secondary: var(--color-4);
-  --secondary-foreground: var(--color-1);
-  --muted: var(--color-5);
-  --muted-foreground: var(--color-2);
-  --accent: var(--color-3);
-  --accent-foreground: var(--color-1);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: var(--color-4);
-  --input: var(--color-4);
-  --ring: var(--color-3);
-  --chart-1: var(--color-1);
-  --chart-2: var(--color-2);
-  --chart-3: var(--color-3);
-  --chart-4: var(--color-4);
-  --chart-5: var(--color-5);
   /*
-   * Light theme: ink darkest for the primary series, lightening down the
-   * ranking. `none` is the lightest that still clears 3:1 against --card
-   * (#ffffff) as a non-text graphic.
+   * The brand palette, verbatim.
+   *
+   * Named --brand-* rather than --color-*: Tailwind owns the --color-*
+   * namespace for utility generation, so a `--color-primary` declared here
+   * would collide with the `bg-primary` utility that @theme inline maps to
+   * --primary. The names below carry the same meanings as the palette spec —
+   * base/surface/text are its primary/secondary/text.
    */
-  --series-in: var(--color-1);
-  --series-out: var(--color-3);
-  --series-none: var(--color-4);
+  --brand-base: #0a0a0a;
+  --brand-surface: #262626;
+  --brand-text: #fafafa;
+
+  --brand-success: #22c55e;
+  --brand-danger: #ef4444;
+  --brand-warning: #f59e0b;
+  --brand-info: #3b82f6;
+
+  --brand-muted: #a3a3a3;
+  --brand-border: #404040;
+  --brand-disabled: #525252;
+
+  /*
+   * Three surface levels out of the palette's two neutrals. The page sits on
+   * the base, a card lifts a little off it, and hover/tint surfaces sit on the
+   * secondary — without that middle step a card and its own hover states would
+   * be the same colour.
+   */
+  --background: var(--brand-base);
+  --foreground: var(--brand-text);
+  --card: color-mix(in srgb, var(--brand-base) 60%, var(--brand-surface));
+  --card-foreground: var(--brand-text);
+  --popover: var(--brand-surface);
+  --popover-foreground: var(--brand-text);
+
+  /* On a dark ground the primary action is the ink, not the base. */
+  --primary: var(--brand-text);
+  --primary-foreground: var(--brand-base);
+  --secondary: var(--brand-surface);
+  --secondary-foreground: var(--brand-text);
+  --muted: var(--brand-surface);
+  --muted-foreground: var(--brand-muted);
+  --accent: var(--brand-surface);
+  --accent-foreground: var(--brand-text);
+
+  --destructive: var(--brand-danger);
+  /*
+   * Ink for danger text that sits on a danger tint (the destructive badge and
+   * button). #ef4444 clears 4.5:1 on a plain card, but a 20% red tint behind it
+   * pulls the pair down to 3.9:1, so those surfaces use a danger lifted toward
+   * the foreground — 5.4:1 on the tint. Plain `text-destructive` on a card is
+   * unaffected and still uses the palette value.
+   */
+  --destructive-foreground: color-mix(
+    in srgb,
+    var(--brand-danger) 72%,
+    var(--brand-text)
+  );
+  --success: var(--brand-success);
+  --warning: var(--brand-warning);
+  --info: var(--brand-info);
+  --disabled: var(--brand-disabled);
+
+  --border: var(--brand-border);
+  --input: var(--brand-border);
+  /*
+   * The focus ring is --brand-muted, not --brand-border: a ring has to clear
+   * 3:1 against the surface it is drawn on, and #404040 on the base reads
+   * 1.9:1. #a3a3a3 reads 7.9:1.
+   */
+  --ring: var(--brand-muted);
+
+  /* Chart ramp, brightest first, so series 1 is the one the eye lands on. */
+  --chart-1: var(--brand-text);
+  --chart-2: var(--brand-muted);
+  --chart-3: var(--brand-disabled);
+  --chart-4: var(--brand-border);
+  --chart-5: var(--brand-surface);
+
+  /*
+   * Attendance series, ranked by ink weight against --card.
+   *
+   * `none` is a mix rather than a palette value because the palette has a gap
+   * here: --brand-disabled reads 2.4:1 on the card, under the 3:1 a non-text
+   * graphic needs, while --brand-muted is already spoken for by `out`. The mix
+   * lands near #7f7f7f at 4.5:1 and stays clearly below `out`.
+   */
+  --series-in: var(--brand-text);
+  --series-out: var(--brand-muted);
+  --series-none: color-mix(
+    in srgb,
+    var(--brand-muted) 55%,
+    var(--brand-disabled)
+  );
   --series-invalid: var(--destructive);
+
   --radius: 0.625rem;
   /* Icon outline weight. Iconsax ships 1.5; this thins it globally. */
   --icon-stroke-width: 1;
-  --sidebar: var(--color-1);
-  --sidebar-foreground: var(--color-5);
-  --sidebar-primary: var(--color-3);
-  --sidebar-primary-foreground: var(--color-1);
-  --sidebar-accent: var(--color-2);
-  --sidebar-accent-foreground: var(--color-5);
-  --sidebar-border: var(--color-2);
-  --sidebar-ring: var(--color-3);
-}
 
-.dark {
-  --background: var(--color-1);
-  --foreground: var(--color-5);
-  --card: color-mix(in srgb, var(--color-1) 80%, var(--color-2));
-  --card-foreground: var(--color-5);
-  --popover: color-mix(in srgb, var(--color-1) 80%, var(--color-2));
-  --popover-foreground: var(--color-5);
-  --primary: var(--color-4);
-  --primary-foreground: var(--color-1);
-  --secondary: var(--color-2);
-  --secondary-foreground: var(--color-5);
-  --muted: var(--color-2);
-  --muted-foreground: var(--color-4);
-  --accent: var(--color-3);
-  --accent-foreground: var(--color-1);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: var(--color-2);
-  --input: var(--color-2);
-  --ring: var(--color-3);
-  --chart-1: var(--color-5);
-  --chart-2: var(--color-4);
-  --chart-3: var(--color-3);
-  --chart-4: var(--color-2);
-  --chart-5: var(--color-1);
-  /*
-   * Dark theme inverts the ramp so the ranking survives the flip: the primary
-   * series stays the brightest against the dark card, and `none` recedes.
-   * --color-2 is deliberately the floor — anything darker disappears into the
-   * card surface.
-   */
-  --series-in: var(--color-5);
-  --series-out: var(--color-3);
-  --series-none: var(--color-2);
-  --series-invalid: var(--destructive);
-  --sidebar: var(--color-1);
-  --sidebar-foreground: var(--color-5);
-  --sidebar-primary: var(--color-4);
-  --sidebar-primary-foreground: var(--color-1);
-  --sidebar-accent: var(--color-2);
-  --sidebar-accent-foreground: var(--color-5);
-  --sidebar-border: var(--color-2);
-  --sidebar-ring: var(--color-3);
+  --sidebar: var(--brand-base);
+  --sidebar-foreground: var(--brand-text);
+  --sidebar-primary: var(--brand-text);
+  --sidebar-primary-foreground: var(--brand-base);
+  --sidebar-accent: var(--brand-surface);
+  --sidebar-accent-foreground: var(--brand-text);
+  --sidebar-border: var(--brand-border);
+  --sidebar-ring: var(--brand-muted);
 }
 
 @layer base {
@@ -225,6 +274,11 @@
   }
   html {
     @apply font-sans;
+    /*
+     * Dark-only, so the UA is told once: form controls, scrollbars and the
+     * canvas behind an over-scroll all render dark without a per-element rule.
+     */
+    color-scheme: dark;
   }
 
   /*
@@ -247,31 +301,31 @@
 
 @layer components {
   /*
-   * Auth page chrome. The login is fixed dark-on-dark regardless of theme, so
-   * these are literal brand-token compositions rather than semantic vars.
+   * Auth page chrome, built from literal palette compositions rather than the
+   * semantic tokens: the login sits on its own darker ground than the app.
    *
    * Only non-conflicting properties live here: shadcn's Input/Button emit
    * utility-layer classes for color/border/background, and utilities beat
    * components in cascade order. Anything that collides with a primitive's own
-   * utilities is exposed as a --auth-* var below and applied from the JSX via
-   * arbitrary-value utilities, so tailwind-merge can resolve the conflict.
+   * utilities is exposed as a --color-auth-* token above and applied from the
+   * JSX, so tailwind-merge can resolve the conflict.
    */
   .auth-gradient {
-    background-color: var(--color-1);
+    background-color: var(--brand-base);
     background-image:
       radial-gradient(
         60rem 45rem at 12% 8%,
-        color-mix(in srgb, var(--color-5) 7%, transparent),
+        color-mix(in srgb, var(--brand-text) 7%, transparent),
         transparent 60%
       ),
       radial-gradient(
         50rem 40rem at 88% 92%,
-        color-mix(in srgb, var(--color-3) 8%, transparent),
+        color-mix(in srgb, var(--brand-muted) 8%, transparent),
         transparent 55%
       ),
       linear-gradient(
         160deg,
-        color-mix(in srgb, var(--color-5) 3%, transparent),
+        color-mix(in srgb, var(--brand-text) 3%, transparent),
         transparent 45%
       );
   }
@@ -281,8 +335,8 @@
     background-image: linear-gradient(
       to bottom,
       transparent,
-      color-mix(in srgb, var(--color-5) 12%, transparent) 30%,
-      color-mix(in srgb, var(--color-5) 12%, transparent) 70%,
+      color-mix(in srgb, var(--brand-text) 12%, transparent) 30%,
+      color-mix(in srgb, var(--brand-text) 12%, transparent) 70%,
       transparent
     );
   }
@@ -295,16 +349,20 @@
      */
     --icon-stroke-width: 1.5;
     border: 1px solid var(--color-auth-hairline);
-    background-color: color-mix(in srgb, var(--color-1) 92%, var(--color-2));
+    background-color: color-mix(
+      in srgb,
+      var(--brand-base) 92%,
+      var(--brand-surface)
+    );
     box-shadow:
-      0 1px 0 0 color-mix(in srgb, var(--color-5) 6%, transparent) inset,
+      0 1px 0 0 color-mix(in srgb, var(--brand-text) 6%, transparent) inset,
       0 24px 60px -20px rgb(0 0 0 / 0.6);
   }
 
   /* Thin, brand-tinted scrollbar for the rail's scrolling navigation area. */
   .rail-scroll {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in srgb, var(--color-5) 16%, transparent)
+    scrollbar-color: color-mix(in srgb, var(--brand-text) 16%, transparent)
       transparent;
   }
 
@@ -314,7 +372,7 @@
 
   .rail-scroll::-webkit-scrollbar-thumb {
     border-radius: 9999px;
-    background-color: color-mix(in srgb, var(--color-5) 16%, transparent);
+    background-color: color-mix(in srgb, var(--brand-text) 16%, transparent);
   }
 
   .rail-scroll::-webkit-scrollbar-track {

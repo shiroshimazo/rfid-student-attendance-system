@@ -45,7 +45,7 @@ export function LoginForm() {
               required
               maxLength={320}
               placeholder="you@example.com"
-              className="h-11 rounded-lg border-auth-hairline bg-auth-field pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder dark:bg-auth-field"
+              className="h-11 rounded-lg border-auth-hairline bg-auth-field pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder"
             />
           </div>
         </div>
@@ -68,7 +68,7 @@ export function LoginForm() {
         <Button
           type="submit"
           disabled={pending}
-          className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-[var(--color-1)] transition-[scale,background-color,translate] duration-150 ease-out hover:bg-auth-submit-hover active:not-disabled:scale-[0.96] motion-reduce:active:not-disabled:scale-100"
+          className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-brand-base transition-[scale,background-color,translate] duration-150 ease-out hover:bg-auth-submit-hover active:not-disabled:scale-[0.96] motion-reduce:active:not-disabled:scale-100"
         >
           {pending ? "Signing in…" : "Sign in"}
         </Button>

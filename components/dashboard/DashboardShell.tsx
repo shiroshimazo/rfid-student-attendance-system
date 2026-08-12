@@ -97,7 +97,7 @@ export function DashboardShell({ config, children }: DashboardShellProps) {
         <div
           onClick={closeDrawer}
           className={cn(
-            "fixed inset-0 z-40 bg-brand-1/70 backdrop-blur-[2px] transition-opacity duration-200",
+            "fixed inset-0 z-40 bg-brand-base/70 backdrop-blur-[2px] transition-opacity duration-200",
             drawerOpen ? "opacity-100" : "opacity-0",
           )}
         />

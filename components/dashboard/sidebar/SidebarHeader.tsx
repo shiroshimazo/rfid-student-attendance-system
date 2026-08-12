@@ -29,7 +29,7 @@ export function SidebarHeader() {
           type="button"
           onClick={toggleCollapsed}
           aria-label="Expand sidebar"
-          className="group/brand relative flex size-9 items-center justify-center rounded-xl bg-rail-active text-rail-fg transition-colors outline-none hover:bg-rail-hover focus-visible:ring-2 focus-visible:ring-brand-3"
+          className="group/brand relative flex size-9 items-center justify-center rounded-xl bg-rail-active text-rail-fg transition-colors outline-none hover:bg-rail-hover focus-visible:ring-2 focus-visible:ring-ring"
         >
           <span className="group-hover/brand:hidden group-focus-visible/brand:hidden">
             <BrandMark />
@@ -66,7 +66,7 @@ export function SidebarHeader() {
         aria-label={isMobile ? "Close navigation" : "Collapse sidebar"}
         className={cn(
           "flex size-9 shrink-0 items-center justify-center rounded-lg text-rail-icon transition-colors outline-none",
-          "hover:bg-rail-hover hover:text-rail-fg focus-visible:ring-2 focus-visible:ring-brand-3",
+          "hover:bg-rail-hover hover:text-rail-fg focus-visible:ring-2 focus-visible:ring-ring",
         )}
       >
         {isMobile ? (

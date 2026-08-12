@@ -144,7 +144,7 @@ function EmailRequest({
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               placeholder="you@example.com"
-              className="h-11 rounded-lg border-auth-hairline bg-auth-field pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder dark:bg-auth-field"
+              className="h-11 rounded-lg border-auth-hairline bg-auth-field pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder"
             />
           </div>
         </div>
@@ -157,7 +157,7 @@ function EmailRequest({
           <p
             className={
               state.status === "error"
-                ? "text-sm text-red-500"
+                ? "text-sm text-auth-danger"
                 : "text-sm text-auth-label"
             }
             role={state.status === "error" ? "alert" : "status"}
@@ -170,7 +170,7 @@ function EmailRequest({
         <Button
           type="submit"
           disabled={pending || !email.trim()}
-          className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-[var(--color-1)] hover:bg-auth-submit-hover"
+          className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-brand-base hover:bg-auth-submit-hover"
         >
           {pending ? "Sending Code…" : "Send Verification Code"}
         </Button>
@@ -237,7 +237,7 @@ function RecoveryVerification({
               <p
                 className={
                   resendState.status === "error"
-                    ? "text-sm text-red-500"
+                    ? "text-sm text-auth-danger"
                     : "text-sm text-auth-label"
                 }
                 role={resendState.status === "error" ? "alert" : "status"}
@@ -423,7 +423,7 @@ function VerifyCodeForm({
               onChange={(event) => handleOtpChange(index, event.target.value)}
               onKeyDown={(event) => handleOtpKeyDown(index, event)}
               onPaste={handleOtpPaste}
-              className="h-12 w-full min-w-0 rounded-lg border border-auth-hairline bg-auth-field text-center text-base font-medium text-auth-fg outline-none transition-colors focus:border-ring focus:ring-3 focus:ring-ring/50 dark:bg-auth-field"
+              className="h-12 w-full min-w-0 rounded-lg border border-auth-hairline bg-auth-field text-center text-base font-medium text-auth-fg outline-none transition-colors focus:border-ring focus:ring-3 focus:ring-ring/50"
               aria-label={`Verification code digit ${index + 1}`}
             />
           ))}
@@ -438,8 +438,8 @@ function VerifyCodeForm({
         <p
           className={
             state.status === "error"
-              ? "flex items-center gap-1.5 text-sm text-red-500"
-              : "flex items-center gap-1.5 text-sm text-green-500"
+              ? "flex items-center gap-1.5 text-sm text-auth-danger"
+              : "flex items-center gap-1.5 text-sm text-auth-success"
           }
           role={state.status === "error" ? "alert" : "status"}
           aria-live="polite"
@@ -456,7 +456,7 @@ function VerifyCodeForm({
       <Button
         type="submit"
         disabled={pending || code.length !== RECOVERY_OTP_LENGTH}
-        className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-[var(--color-1)] hover:bg-auth-submit-hover disabled:opacity-50"
+        className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-brand-base hover:bg-auth-submit-hover disabled:opacity-50"
       >
         {pending ? "Verifying…" : "Verify Code"}
       </Button>
@@ -488,7 +488,7 @@ function PasswordForm({ onCompleted }: { onCompleted: () => void }) {
   return (
     <form action={formAction} className="mt-8 space-y-5">
       <p
-        className="flex items-center gap-1.5 text-sm text-green-500"
+        className="flex items-center gap-1.5 text-sm text-auth-success"
         role="status"
       >
         <TickCircle size={16} aria-hidden="true" />
@@ -549,8 +549,8 @@ function PasswordForm({ onCompleted }: { onCompleted: () => void }) {
         <p
           className={
             passwordsMatch
-              ? "flex items-center gap-1.5 text-sm text-green-500"
-              : "flex items-center gap-1.5 text-sm text-red-500"
+              ? "flex items-center gap-1.5 text-sm text-auth-success"
+              : "flex items-center gap-1.5 text-sm text-auth-danger"
           }
           role="status"
           aria-live="polite"
@@ -565,7 +565,7 @@ function PasswordForm({ onCompleted }: { onCompleted: () => void }) {
       ) : null}
 
       {state.status === "error" ? (
-        <p className="text-sm text-red-500" role="alert" aria-live="polite">
+        <p className="text-sm text-auth-danger" role="alert" aria-live="polite">
           {state.message}
         </p>
       ) : null}
@@ -573,7 +573,7 @@ function PasswordForm({ onCompleted }: { onCompleted: () => void }) {
       <Button
         type="submit"
         disabled={!allRequirementsMet || pending}
-        className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-[var(--color-1)] hover:bg-auth-submit-hover disabled:opacity-50"
+        className="h-11 w-full rounded-lg bg-auth-fg text-sm font-medium text-brand-base hover:bg-auth-submit-hover disabled:opacity-50"
       >
         {pending ? "Updating…" : "Update Password"}
       </Button>
@@ -622,7 +622,7 @@ function PasswordInput({
           onChange={(event) => onChange(event.target.value)}
           disabled={disabled}
           placeholder="••••••••••••"
-          className="h-11 rounded-lg border-auth-hairline bg-auth-field pr-11 pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder dark:bg-auth-field"
+          className="h-11 rounded-lg border-auth-hairline bg-auth-field pr-11 pl-10 text-sm text-auth-fg placeholder:text-auth-placeholder"
         />
         <button
           type="button"
@@ -647,7 +647,7 @@ function RequirementItem({ met, text }: { met: boolean; text: string }) {
   return (
     <div
       className={`flex items-center gap-1.5 ${
-        met ? "text-green-500" : "text-auth-icon"
+        met ? "text-auth-success" : "text-auth-icon"
       }`}
     >
       {met ? (
@@ -663,8 +663,8 @@ function RequirementItem({ met, text }: { met: boolean; text: string }) {
 function PasswordUpdated() {
   return (
     <div className="text-center">
-      <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10">
-        <TickCircle size={32} className="text-green-500" aria-hidden="true" />
+      <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-auth-success/10">
+        <TickCircle size={32} className="text-auth-success" aria-hidden="true" />
       </div>
       <h1 className="font-heading text-2xl font-medium text-auth-fg">
         Password Updated
@@ -674,7 +674,7 @@ function PasswordUpdated() {
       </p>
       <Link
         href="/login"
-        className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg bg-auth-fg text-sm font-medium text-[var(--color-1)] transition-colors hover:bg-auth-submit-hover"
+        className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg bg-auth-fg text-sm font-medium text-brand-base transition-colors hover:bg-auth-submit-hover"
       >
         Back to Sign In
       </Link>
