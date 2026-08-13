@@ -27,6 +27,8 @@ export function ChartTooltip({ title, rows, className }: ChartTooltipProps) {
   return (
     <div
       role="tooltip"
+      aria-live="polite"
+      aria-atomic="true"
       className={cn(
         "pointer-events-none min-w-36 rounded-xl border border-border bg-popover px-3 py-2 shadow-lg",
         className,

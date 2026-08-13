@@ -1,10 +1,5 @@
-import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
+import { AttendanceReportsDashboard } from "@/components/dashboard/reports/AttendanceReportsDashboard";
 
 export default function AdminReportsPage() {
-  return (
-    <RoutePlaceholder
-      title="Reports"
-      description="Generate and export attendance reports."
-    />
-  );
+  return <AttendanceReportsDashboard />;
 }

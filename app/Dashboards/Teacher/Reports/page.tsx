@@ -1,10 +1,5 @@
-import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
+import { AttendanceReportsDashboard } from "@/components/dashboard/reports/AttendanceReportsDashboard";
 
 export default function TeacherReportsPage() {
-  return (
-    <RoutePlaceholder
-      title="Reports"
-      description="Generate reports for your assigned classes."
-    />
-  );
+  return <AttendanceReportsDashboard />;
 }
