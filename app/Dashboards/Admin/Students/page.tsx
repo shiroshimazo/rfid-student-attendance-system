@@ -1,10 +1,5 @@
-import { RoutePlaceholder } from "@/app/_Components/routePlaceholder";
+import { StudentsDashboard } from "@/components/dashboard/admin/students/StudentsDashboard";
 
 export default function AdminStudentsPage() {
-  return (
-    <RoutePlaceholder
-      title="Students"
-      description="View and manage student records."
-    />
-  );
+  return <StudentsDashboard />;
 }
